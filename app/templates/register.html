@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3">Rejestracja</h1>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.email.label(class_="form-label") }}
+            {{ form.email(class_="form-control", placeholder="email@domena.pl") }}
+          </div>
+          <div class="mb-3">
+            {{ form.password.label(class_="form-label") }}
+            {{ form.password(class_="form-control", placeholder="Min. 8 znaków") }}
+          </div>
+          <div class="mb-3">
+            {{ form.password2.label(class_="form-label") }}
+            {{ form.password2(class_="form-control", placeholder="Powtórz hasło") }}
+          </div>
+          <div class="d-grid gap-2">
+            {{ form.submit(class_="btn btn-dark") }}
+          </div>
+        </form>
+        <div class="mt-3 small">Masz już konto? <a href="{{ url_for('auth.login') }}">Zaloguj się</a>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,282 @@
+/*
+  BDL – Rynek pracy
+  Jasny motyw: większa czytelność, wyższy kontrast, „czystsze” karty.
+*/
+
+:root{
+  --bg1:#f6f8ff;
+  --bg2:#eef2ff;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#475569;
+  --accent:#4f46e5;
+  --accent2:#06b6d4;
+  /* paleta „żywsza”, ale nadal czytelna */
+  --indigo:#4f46e5;
+  --cyan:#06b6d4;
+  --emerald:#10b981;
+  --amber:#f59e0b;
+  --violet:#8b5cf6;
+  --rose:#f43f5e;
+  --shadow: 0 10px 28px rgba(15,23,42,.08);
+  --shadow2: 0 18px 48px rgba(15,23,42,.12);
+  --border: rgba(15,23,42,.10);
+}
+
+*{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.app-bg{
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 600px at 12% 8%, rgba(79,70,229,.18), transparent 60%),
+    radial-gradient(900px 500px at 92% 18%, rgba(6,182,212,.14), transparent 55%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+  color: var(--text);
+}
+
+.navbar{
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.86) !important;
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-brand{
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--text);
+}
+
+.navbar-brand i{ color: var(--indigo); }
+
+.container{ max-width: 1180px; }
+
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* nagłówki i ikony w kartach: biorą kolor z akcentu karty */
+.card-accent h2 i,
+.card-accent .badge-soft i,
+.card-accent .kpi{
+  color: var(--card-accent, var(--indigo));
+}
+
+.card-accent .kpi{ text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+
+/* mocniejsze odseparowanie sekcji + „pasek” koloru */
+.card-accent{ position: relative; overflow: hidden; }
+.card-accent::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--card-accent, var(--indigo)), rgba(255,255,255,0));
+}
+.card-accent::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--card-accent, var(--indigo)), rgba(255,255,255,0));
+  opacity:.8;
+}
+
+.accent-indigo{ --card-accent: var(--indigo); }
+.accent-cyan{ --card-accent: var(--cyan); }
+.accent-emerald{ --card-accent: var(--emerald); }
+.accent-amber{ --card-accent: var(--amber); }
+.accent-violet{ --card-accent: var(--violet); }
+
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--shadow2);
+}
+
+.card, .btn, .img-soft, .chart-frame img{
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.btn-dark{
+  background: linear-gradient(135deg, var(--accent), #4338ca);
+  border: 0;
+}
+
+.btn-outline-dark{
+  border-color: rgba(15,23,42,.25);
+  color: var(--text);
+}
+
+.btn-outline-dark:hover{
+  background: rgba(79,70,229,.08);
+  border-color: rgba(79,70,229,.35);
+  color: var(--text);
+}
+
+.text-muted{ color: var(--muted) !important; }
+
+.badge-soft{
+  padding: .35rem .55rem;
+  border-radius: 999px;
+  background: var(--badge-bg, rgba(79,70,229,.10));
+  border: 1px solid var(--badge-border, rgba(79,70,229,.18));
+  color: var(--badge-text, var(--text));
+  font-weight: 800;
+}
+
+.badge-indigo{ --badge-bg: rgba(79,70,229,.12); --badge-border: rgba(79,70,229,.22); }
+.badge-cyan{ --badge-bg: rgba(6,182,212,.14); --badge-border: rgba(6,182,212,.28); }
+.badge-emerald{ --badge-bg: rgba(16,185,129,.14); --badge-border: rgba(16,185,129,.28); }
+.badge-amber{ --badge-bg: rgba(245,158,11,.14); --badge-border: rgba(245,158,11,.28); }
+.badge-violet{ --badge-bg: rgba(139,92,246,.14); --badge-border: rgba(139,92,246,.28); }
+
+.kpi{
+  font-size: 2.3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.kpi-sub{
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.soft-panel{
+  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(2,6,23,.02));
+  border: 1px solid rgba(15,23,42,.09);
+}
+
+.table{ color: var(--text); }
+.table thead th{
+  background: rgba(2,6,23,.04);
+  color: var(--text);
+  border-bottom: 1px solid rgba(15,23,42,.12) !important;
+}
+.table tbody tr{ border-color: rgba(15,23,42,.08); }
+.table tbody tr:hover{ background: rgba(79,70,229,.05); }
+
+/* Spójny rozmiar wykresów */
+.chart-frame{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(15,23,42,.12);
+  background:
+    radial-gradient(900px 300px at 10% 10%, rgba(79,70,229,.08), transparent 60%),
+    radial-gradient(700px 260px at 90% 0%, rgba(6,182,212,.08), transparent 55%),
+    #fff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.75);
+  overflow: hidden;
+}
+
+/* tło pod wykresem dopasowane do akcentu sekcji (subtelne, ale „kolorowe”) */
+.accent-indigo .chart-frame{ background:
+  radial-gradient(900px 300px at 12% 8%, rgba(79,70,229,.14), transparent 60%),
+  radial-gradient(700px 260px at 92% 0%, rgba(99,102,241,.10), transparent 55%),
+  #fff;
+}
+.accent-cyan .chart-frame{ background:
+  radial-gradient(900px 300px at 12% 8%, rgba(6,182,212,.14), transparent 60%),
+  radial-gradient(700px 260px at 92% 0%, rgba(34,211,238,.10), transparent 55%),
+  #fff;
+}
+.accent-amber .chart-frame{ background:
+  radial-gradient(900px 300px at 12% 8%, rgba(245,158,11,.16), transparent 60%),
+  radial-gradient(700px 260px at 92% 0%, rgba(251,191,36,.10), transparent 55%),
+  #fff;
+}
+.accent-emerald .chart-frame{ background:
+  radial-gradient(900px 300px at 12% 8%, rgba(16,185,129,.15), transparent 60%),
+  radial-gradient(700px 260px at 92% 0%, rgba(52,211,153,.10), transparent 55%),
+  #fff;
+}
+.accent-violet .chart-frame{ background:
+  radial-gradient(900px 300px at 12% 8%, rgba(139,92,246,.15), transparent 60%),
+  radial-gradient(700px 260px at 92% 0%, rgba(167,139,250,.10), transparent 55%),
+  #fff;
+}
+
+.chart-frame img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+.chart-frame img:hover{
+  transform: scale(1.01);
+}
+
+/* Fullscreen podgląd wykresu */
+.chart-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15,23,42,.62);
+}
+
+.chart-modal.show{ display: flex; }
+
+.chart-modal-dialog{
+  width: min(1200px, 100%);
+  max-height: calc(100vh - 40px);
+  position: relative;
+}
+
+.chart-modal-img{
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  object-fit: contain;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+}
+
+.chart-modal-close{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,.12);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 10px 26px rgba(0,0,0,.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-modal-close:hover{
+  background: #fff;
+}
+
+.fade-in{
+  animation: fadeInUp .55s ease both;
+}
+
+.fade-in.delay-1{ animation-delay: .06s; }
+.fade-in.delay-2{ animation-delay: .12s; }
+.fade-in.delay-3{ animation-delay: .18s; }
+
+@keyframes fadeInUp{
+  from{ opacity:0; transform: translateY(10px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .fade-in, .card, .btn, .chart-frame img{ animation:none; transition:none; }
+  .card:hover{ transform:none; }
+}

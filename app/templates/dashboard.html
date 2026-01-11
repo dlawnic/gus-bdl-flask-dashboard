@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-between mb-3 fade-in">
+  <div>
+    <h1 class="h3 mb-1">Raport rynku pracy (BDL)</h1>
+    <div class="text-muted">Bezrobocie rejestrowane + przeciętne wynagrodzenie brutto • województwa</div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <a class="btn btn-dark" href="{{ url_for('dashboard.export_excel') }}">
+      <i class="bi bi-download me-2"></i>Pobierz Excel
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- PODSUMOWANIE -->
+  <div class="col-lg-4 fade-in delay-1">
+    <div class="card h-100 card-accent accent-indigo">
+      <div class="card-body">
+        <span class="badge-soft badge-indigo mb-3 d-inline-flex align-items-center">
+          <i class="bi bi-bar-chart-line me-2"></i> Podsumowanie
+        </span>
+
+        <div class="mb-3">
+          <div class="kpi">{{ summary.latest_unemp_year if summary.latest_unemp_year else "—" }}</div>
+          <div class="kpi-sub">Najnowszy rok bezrobocia</div>
+        </div>
+
+        <div class="row g-2">
+          <div class="col-12">
+            <div class="p-3 rounded-4 soft-panel">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">Średnia stopa bezrobocia</div>
+                  <div class="text-muted small">rok: {{ summary.latest_unemp_year if summary.latest_unemp_year else "—" }}</div>
+                </div>
+                <div class="fw-bold">
+                  {% if summary.avg_unemployment_latest is not none %}
+                    {{ "%.2f"|format(summary.avg_unemployment_latest) }}%
+                  {% else %}—{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="p-3 rounded-4 soft-panel">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">Średnie wynagrodzenie</div>
+                  <div class="text-muted small">rok: {{ summary.latest_wage_year if summary.latest_wage_year else "—" }}</div>
+                </div>
+                <div class="fw-bold">
+                  {% if summary.avg_wage_latest is not none %}
+                    {{ "%.0f"|format(summary.avg_wage_latest) }} zł
+                  {% else %}—{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="p-3 rounded-4 soft-panel">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">Korelacja płace ↔ bezrobocie</div>
+                  <div class="text-muted small">rok wspólny: {{ summary.latest_both_year if summary.latest_both_year else "—" }}</div>
+                </div>
+                <div class="fw-bold">
+                  {% if summary.corr_unemp_vs_wage_latest is not none %}
+                    {{ "%.3f"|format(summary.corr_unemp_vs_wage_latest) }}
+                  {% else %}—{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 text-muted small">
+          Lata mogą się różnić (BDL publikuje wskaźniki w różnych cyklach).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREND -->
+  <div class="col-lg-8 fade-in delay-2">
+    <div class="card h-100 card-accent accent-cyan">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h5 mb-0"><i class="bi bi-graph-up me-2"></i>Trend w czasie</h2>
+          <span class="badge-soft badge-cyan">2 osie Y</span>
+        </div>
+
+        <div class="chart-frame mt-3">
+          <img src="{{ url_for('static', filename=chart_paths.trend) }}" alt="Trend" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAR + SCATTER -->
+  <div class="col-lg-6 fade-in delay-1">
+    <div class="card h-100 card-accent accent-amber">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h5 mb-0"><i class="bi bi-bar-chart me-2"></i>Bezrobocie wg województw</h2>
+          <span class="badge-soft badge-amber">rok: {{ summary.latest_unemp_year if summary.latest_unemp_year else "—" }}</span>
+        </div>
+
+        <div class="chart-frame mt-3">
+          <img src="{{ url_for('static', filename=chart_paths.bar_unemp) }}" alt="Bezrobocie wg województw" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 fade-in delay-2">
+    <div class="card h-100 card-accent accent-emerald">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h5 mb-0"><i class="bi bi-bounding-box-circles me-2"></i>Płace vs bezrobocie</h2>
+          <span class="badge-soft badge-emerald">rok wspólny: {{ summary.latest_both_year if summary.latest_both_year else "—" }}</span>
+        </div>
+
+        <div class="chart-frame mt-3">
+          <img src="{{ url_for('static', filename=chart_paths.scatter) }}" alt="Zależność płace vs bezrobocie" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RANKING -->
+  <div class="col-12 fade-in delay-3">
+    <div class="card card-accent accent-violet">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h5 mb-0"><i class="bi bi-list-ol me-2"></i>Ranking województw (bezrobocie)</h2>
+          <div class="d-flex flex-wrap gap-2 justify-content-end">
+            <span class="badge-soft badge-violet">bezrobocie: {{ summary.latest_unemp_year if summary.latest_unemp_year else "—" }}</span>
+            <span class="badge-soft badge-violet">płace: {{ summary.latest_wage_year if summary.latest_wage_year else "—" }}</span>
+          </div>
+        </div>
+
+        <div class="text-muted small">
+          W kolumnie „Przeciętne wynagrodzenie” pokazujemy najnowszy dostępny rok płac (BDL publikuje płace z opóźnieniem).
+        </div>
+
+        {% if tables.ranking.empty %}
+          <div class="alert alert-warning mt-3 mb-0">Brak danych do rankingu.</div>
+        {% else %}
+          <div class="table-responsive mt-3">
+            <table class="table table-hover table-sm align-middle mb-0">
+              <thead>
+                <tr>
+                  <th style="width: 60px;">#</th>
+                  <th>Województwo</th>
+                  <th class="text-end">Stopa bezrobocia (%)</th>
+                  <th class="text-end">Przeciętne wynagrodzenie (zł)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in tables.ranking.itertuples(index=False) %}
+                <tr>
+                  <td class="text-muted">{{ loop.index }}</td>
+                  <td class="fw-semibold">{{ r[0] if r[0] else "—" }}</td>
+                  <td class="text-end">{{ "%.2f"|format(r[1]) }}</td>
+                  <td class="text-end">
+                    {% if r[2] is not none and r[2] == r[2] %}
+                      {{ "%.0f"|format(r[2]) }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row g-3 mt-3">
+            <div class="col-md-6">
+              <div class="p-3 rounded-4 soft-panel">
+                <div class="fw-semibold mb-2">Top 5 (najwyższe bezrobocie)</div>
+                <ol class="mb-0">
+                  {% for r in tables.top5.itertuples(index=False) %}
+                    <li>{{ r[0] if r[0] else "—" }} — {{ "%.2f"|format(r[1]) }}%</li>
+                  {% endfor %}
+                </ol>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="p-3 rounded-4 soft-panel">
+                <div class="fw-semibold mb-2">Bottom 5 (najniższe bezrobocie)</div>
+                <ol class="mb-0">
+                  {% for r in tables.bottom5.itertuples(index=False) %}
+                    <li>{{ r[0] if r[0] else "—" }} — {{ "%.2f"|format(r[1]) }}%</li>
+                  {% endfor %}
+                </ol>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
