@@ -77,10 +77,14 @@ http://localhost:8000
 
 app/
 ├── data/          # Klient API BDL, cache, analiza danych
+
 ├── templates/     # Szablony HTML
+
 ├── static/        # Pliki statyczne
+
 docs/
 ├── report.md      # Dokumentacja projektu
+
 tests/             # Testy jednostkowe
 
 ## ⚠️ Uwagi / Notes
