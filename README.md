@@ -76,6 +76,7 @@ http://localhost:8000
 ## 📁 Struktura projektu / Project Structure
 
 app/
+
 ├── data/          # Klient API BDL, cache, analiza danych
 
 ├── templates/     # Szablony HTML
