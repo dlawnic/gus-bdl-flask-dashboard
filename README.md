@@ -84,6 +84,7 @@ app/
 ├── static/        # Pliki statyczne
 
 docs/
+
 ├── report.md      # Dokumentacja projektu
 
 tests/             # Testy jednostkowe
